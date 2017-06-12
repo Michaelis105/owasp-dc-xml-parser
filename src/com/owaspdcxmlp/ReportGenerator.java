@@ -10,25 +10,25 @@ public class ReportGenerator {
 
     /**
      * Generate dependency check report in JSON format.
-     * @param deps List of unique dependencies.
+     * @param deps List of unique dependencies
      */
-    public static void writeJSON (Collection<Dependency> deps) {
+    private static void writeJSON (Collection<Dependency> deps) {
         throw new UnsupportedOperationException("Unimplemented method!");
     }
 
     /**
      * Generate dependency check report in XML format.
-     * @param deps List of unique dependencies.
+     * @param deps List of unique dependencies
      */
-    public static void writeXML (Collection<Dependency> deps) {
+    private static void writeXML (Collection<Dependency> deps) {
         throw new UnsupportedOperationException("Unimplemented method!");
     }
 
     /**
      * Generate dependency check report in CSV format.
-     * @param deps List of unique dependencies.
+     * @param deps List of unique dependencies
      */
-    public static void writeCSV (Collection<Dependency> deps) {
+    private static void writeCSV (Collection<Dependency> deps) {
         throw new UnsupportedOperationException("Unimplemented method!");
     }
 
@@ -50,6 +50,9 @@ public class ReportGenerator {
     }
 
     public static void setupFileWriter(String path) throws IOException {
+        if (StringUtil.isNull(path)) {
+            throw new IllegalArgumentException("Parameter 'path' null or empty");
+        }
         try {
             fw = new FileWriter(path ,false);
         } catch (IOException e) {

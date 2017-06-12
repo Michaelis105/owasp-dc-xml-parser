@@ -3,16 +3,15 @@ package com.owaspdcxmlp;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import com.owaspdcxmlp.XMLParser;
 
 public class Main {
 
     private static void usage() {
-        System.out.println("Usage: <directory-containing-OWASPDC-XML-files> <absolute-path-to-json> <report type: JSON|XML|CSV>");
+        System.out.println("Usage: <directory-containing-OWASPDC-XML-files> <absolute-path-to-json> <report type: json|xml|csv>");
     }
 
     /**
-     * Extracts files from directory dir
+     * Extracts files from directory dir.
      * @param dir Absolute path to a directory
      * @return List of files
      */
@@ -39,11 +38,12 @@ public class Main {
     }
 
     /**
-     *
-     * @param args
+     * Main calls methods to setup the report generator and XML parser, extract the XML files from arg directory, parses
+     * XMLs fire dependencies, and writes dependency entries to a file.
+     * @param args Parameters specified in usage()
      * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         if (args.length != 3) {
             usage();
             throw new IllegalArgumentException("Need exactly three parameters, see usage.");
@@ -51,7 +51,6 @@ public class Main {
 
         ReportGenerator.setupFileWriter(args[1]);
         XMLParser.setupParser();
-
         File[] xmlList = extractFilesFromDirectory(args[0]);
         Collection<Dependency> uniqueDeps = XMLParser.parseXMLS(xmlList);
         ReportGenerator.generateReport(uniqueDeps, args[2]);
