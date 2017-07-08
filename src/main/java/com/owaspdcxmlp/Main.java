@@ -1,5 +1,6 @@
 package main.java.com.owaspdcxmlp;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -7,7 +8,7 @@ import java.util.Collection;
 public class Main {
 
     private static void usage() {
-        System.out.println("Usage: <directory-containing-OWASPDC-XML-files> <absolute-path-to-output-report> <report type: json|xml|csv>");
+        System.out.println("Usage: <directory-containing-OWASPDC-XML-files> <absolute-path-to-output-data-report> <report type: json|xml|csv> [absolute-path-to-output-HTML-report] [absolute-path-to-jinjava-template]");
     }
 
     /**
@@ -44,9 +45,9 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws Exception {
-        if (args.length != 3) {
+        if (args.length != 3 || args.length > 5) {
             usage();
-            throw new IllegalArgumentException("Need exactly three parameters, see usage.");
+            throw new IllegalArgumentException("See usage");
         }
 
         // Set up
@@ -56,8 +57,11 @@ public class Main {
         File[] xmlList = extractFilesFromDirectory(args[0]);
         Collection<Dependency> uniqueDeps = XMLParser.parseXMLS(xmlList);
         DataFormatReportGenerator.generateDataFormatReport(uniqueDeps, args[2]);
+        if (args.length == 5) {
+            HTMLReportGenerator.generateHTMLReport(args[1], args[3], args[4], "|");
+        }
 
         // Tear Down
-
+        DataFormatReportGenerator.closeFileWriter();
     }
 }

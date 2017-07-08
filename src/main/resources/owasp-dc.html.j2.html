@@ -1,12 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+    <title>OWASP Dependency Check {{ time }}</title>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="resources/css/materialize.min.css"  media="screen,projection"/>
 </head>
-<body>
-
+<body style="height: 100vh">
+    <h3>OWASP Dependency Check Report - {{ time }} |</h3>
+    <h3><a href="https://jeremylong.github.io/DependencyCheck/general/thereport.html">How to read report</a></h3>
+    <table class="responsive-table striped highlight">
+        <thead>
+            <tr>
+                {% for header in propList %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for vul in vulList %}
+                <tr>
+                    {% for str in vul %}
+                        {% if "CVE" in str %}
+                            <td><a href="{{ NVD_CVE_URL }}{{ str }}">{{ str }}</a></td>
+                        {% else %}
+                            {% if "CRITICAL" in str %}
+                                <td style="background-color: red">{{ str }}</td>
+                            {% elif "HIGH" in str %}
+                                <td style="background-color: orange">{{ str }}</td>
+                            {% elif "MEDIUM" in str %}
+                                <td style="background-color: yellow">{{ str }}</td>
+                            {% else %}
+                                <td>{{ str }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
